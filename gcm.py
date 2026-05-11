@@ -7,12 +7,14 @@ from openai import OpenAI
 
 
 def get_staged_diff():
+    # HEAD가 존재하는지 확인 (첫 커밋 전에는 HEAD가 없음)
     has_head = subprocess.run(
         ["git", "rev-parse", "--verify", "HEAD"],
         capture_output=True,
     ).returncode == 0
 
-    # On repos with no commits yet, diff against the empty tree
+    # HEAD가 없으면 빈 트리 해시를 기준으로 비교
+    # (4b825dc... 는 git의 빈 트리 고정 해시값)
     cmd = ["git", "diff", "--cached"]
     if not has_head:
         cmd.append("4b825dc642cb6eb9a060e54bf8d69288fbee4904")
@@ -58,6 +60,7 @@ def generate_commit_message(diff: str) -> str:
             },
         ],
         max_tokens=200,
+        # 낮은 temperature로 일관된 형식의 메시지 생성
         temperature=0.3,
     )
 
@@ -67,11 +70,13 @@ def generate_commit_message(diff: str) -> str:
 def main():
     diff = get_staged_diff()
 
+    # staged 변경사항이 없으면 종료
     if not diff:
         print("No staged changes. Run 'git add' first.", file=sys.stderr)
         sys.exit(1)
 
     message = generate_commit_message(diff)
+    # 커밋 메시지만 stdout에 출력 (호스트 shell 함수가 캡처해서 git commit에 사용)
     print(message)
 
 
