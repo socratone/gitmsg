@@ -23,8 +23,12 @@ source ~/.zshrc
 ```
 
 `install.sh`가 하는 일:
-1. Docker 이미지(`gcm-tool`) 빌드
-2. `~/.zshrc`에 `gcm` 함수 추가
+1. Docker 설치 여부 확인
+2. Docker 이미지(`gcm-tool`) 빌드
+3. `~/.zshrc`에 `gcm` 함수 추가 (중복 추가 방지)
+4. oh-my-zsh git 플러그인의 `gcm` alias 충돌 감지 시 경고 출력
+
+> **oh-my-zsh 사용자 주의**: oh-my-zsh git 플러그인에 `gcm = git checkout main` alias가 기본 포함되어 있습니다. `install.sh`가 자동으로 `unalias gcm`을 삽입해 덮어씁니다.
 
 ## OpenAI API 키 설정
 
@@ -65,6 +69,8 @@ gcm
 ```
 
 Docker 컨테이너는 현재 디렉토리를 마운트해 `git diff --cached`를 읽고, OpenAI API 호출 후 커밋 메시지만 stdout에 출력. 실제 `git commit`은 호스트 shell 함수가 실행.
+
+**첫 커밋 처리**: HEAD가 없는 레포(커밋이 한 번도 없는 경우)에서는 git의 빈 트리 해시(`4b825dc...`)를 기준으로 diff를 생성해 정상 동작합니다.
 
 ## 이미지 업데이트
 
