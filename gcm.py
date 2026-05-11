@@ -7,11 +7,17 @@ from openai import OpenAI
 
 
 def get_staged_diff():
-    result = subprocess.run(
-        ["git", "diff", "--cached"],
+    has_head = subprocess.run(
+        ["git", "rev-parse", "--verify", "HEAD"],
         capture_output=True,
-        text=True,
-    )
+    ).returncode == 0
+
+    # On repos with no commits yet, diff against the empty tree
+    cmd = ["git", "diff", "--cached"]
+    if not has_head:
+        cmd.append("4b825dc642cb6eb9a060e54bf8d69288fbee4904")
+
+    result = subprocess.run(cmd, capture_output=True, text=True)
     if result.returncode != 0:
         print(f"Error running git diff: {result.stderr}", file=sys.stderr)
         sys.exit(1)
