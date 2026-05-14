@@ -5,8 +5,8 @@ RUN pip install --no-cache-dir openai && \
     apt-get install -y --no-install-recommends git && \
     rm -rf /var/lib/apt/lists/*
 
-COPY gcm.py /usr/local/bin/gcm.py
+COPY gitmsg.py /usr/local/bin/gitmsg.py
 
 WORKDIR /workspace
 
-ENTRYPOINT ["python", "/usr/local/bin/gcm.py"]
+ENTRYPOINT ["python", "/usr/local/bin/gitmsg.py"]
