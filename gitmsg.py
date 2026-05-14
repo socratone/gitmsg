@@ -47,6 +47,8 @@ def generate_commit_message(diff: str) -> str:
                     "2. If the diff touches files under multiple top-level directories (monorepo), "
                     "   detect the app/package name from the path (e.g. apps/web/... → web, packages/ui/... → ui) "
                     "   and add it as a scope: feat(web): ...\n"
+                    "   IMPORTANT: Do NOT treat Next.js routing directories (app/, pages/, src/app/, src/pages/) "
+                    "   as monorepo packages — they are framework conventions, not sub-apps.\n"
                     "3. If all changes are within a single app/package, add that scope too.\n"
                     "4. If it's a single-root repo (no clear sub-app structure), omit the scope.\n"
                     "5. The description after the colon must be written in Korean.\n"
