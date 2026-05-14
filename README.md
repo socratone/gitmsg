@@ -5,7 +5,6 @@
 - OpenAI(`gpt-4.1-mini`)가 staged diff를 분석해 커밋 메시지 생성
 - Conventional Commits 형식 (`feat`, `fix`, `refactor` 등)
 - 모노레포 자동 감지 → `feat(web):`, `fix(api):` 형태로 scope 추가
-- Next.js 라우팅 디렉토리(`app/`, `pages/` 등)는 모노레포로 오인하지 않음
 - 커밋 메시지 한국어 작성
 - Docker 기반 — 로컬에 Python 환경 불필요
 
@@ -58,7 +57,6 @@ Commit message: feat(web): 로그인 페이지 컴포넌트 추가
 | 모노레포 (단일 앱) | `fix(api): 토큰 만료 처리 수정` |
 | 모노레포 (여러 앱) | `refactor(web): 공통 훅 분리` |
 
-> Next.js의 `app/`, `pages/` 디렉토리는 프레임워크 라우팅 구조이므로 모노레포 scope로 취급하지 않습니다.
 
 ## 동작 원리
 
